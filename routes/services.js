@@ -9,8 +9,28 @@ router.use(function timeLog (req, res, next) {
   next();
 });
 
-router.get('/get', function (req, res) {
-  res.send('Hello world in a get');
+router.get('/query', function (req, res) {
+	const userData = {idUser} = req.body;
+
+	let options = {
+		where : userData
+	};
+
+	console.log(options);
+
+	User.findOne(options)
+	.then(obj => {
+		if(!obj){
+			res.status(503).json({ message: 'Not found', error: "404"});
+		}
+		else{
+			res.status(200).json(obj);
+		}
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
+	});
 });
 
 router.post('/insert', function (req, res) {
