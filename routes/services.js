@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const chalk = require("chalk");
+const User = require('../models/index').user;
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
@@ -11,8 +13,27 @@ router.get('/get', function (req, res) {
   res.send('Hello world in a get');
 });
 
-router.post('/post', function (req, res) {
-  res.send('Hello world in a post');
+router.post('/insert', function (req, res) {
+
+	const userData = {
+		username,
+		name,
+		lastname,
+		email,
+		password,
+		token
+	} = req.body;
+
+	User.create(userData)
+	.then(obj => {
+		console.log(obj);
+		res.status(200).json(obj);
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
+	});
+
 });
 
 module.exports = router;

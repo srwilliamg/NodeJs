@@ -1,5 +1,6 @@
 # NodeJs
-This is generic repository for NodeJs application with Sequelize as DB
+This is a eepository for a Nodejs application with Sequelize as ORM connected to a mysql DB
 
 1. npm install
 2. npm install --only=dev
+3. sequelize db:migrate
