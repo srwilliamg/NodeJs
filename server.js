@@ -6,10 +6,11 @@ const chalk = require('chalk');
 
 const port = process.env.PORT || 5000;
 
-console.log(chalk.green("\nStarting testing server" ));
+console.log(chalk.greenBright.bold("\nStarting testing server" ));
 
 const app = express();
-app.use(express.static(path.join(__dirname + '/assets')));
+const publicFilesDirectory = path.join(__dirname,'/assets');
+app.use(express.static(publicFilesDirectory));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,4 +33,4 @@ app.use(function (req, res, next) {
 });
 
 
-app.listen(port, () => console.log(chalk.blue(`Server running on port ${port}`)));
+app.listen(port, () => console.log(chalk.blueBright.bold(`Server running on port ${port}`)));

@@ -63,10 +63,10 @@ router.post('/', function (req, res) {
 });
 
 
-router.put('/', function (req, res) {
-	console.log(chalk.blueBright("Executing Update"));
+router.put("/", function (req, res) {
+  console.log(chalk.blueBright("Executing Update"));
 
-	const userData = ({
+  const userData = ({
     username,
     name,
     lastname,
@@ -87,23 +87,20 @@ router.put('/', function (req, res) {
 
   User.update({ username, name, lastname, email, password }, options)
     .then((obj) => {
-		if(obj[0] === 0){
-			response.message = "id not found";
-			response.error = "404";
-			res.status(503).json(response);
-		}
-		else{
-			response.message = "Update successful";
-			res.status(200).json(response);
-		}
-	})
-	.catch((err) => {
-		response.error = err;
-		res.status(503).json(response)
-	});
-
+      if (obj[0] === 0) {
+        response.message = "id not found";
+        response.error = "404";
+        res.status(503).json(response);
+      } else {
+        response.message = "Update successful";
+        res.status(200).json(response);
+      }
+    })
+    .catch((err) => {
+      response.error = err;
+      res.status(503).json(response);
+    });
 });
-
 
 router.delete("/", function (req, res) {
   console.log(chalk.redBright("Executing delete"));
@@ -121,7 +118,7 @@ router.delete("/", function (req, res) {
 
   User.destroy(options)
     .then((obj) => {
-			console.log(obj);
+      console.log(obj);
       if (obj === 0) {
         response.message = "id not found";
         response.error = "404";
