@@ -6,11 +6,16 @@ const User = require('../models/index').user;
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
   console.log('Time: ', Date.now());
+  console.log("Request params: ",req.params);
+  console.log("Request query data: ",req.query);
+  console.log("Request body data: ",req.body,"\n");
   next();
 });
 
-router.get('/query', function (req, res) {
-	const userData = {idUser} = req.body;
+router.get('/', function (req, res) {
+	console.log(chalk.greenBright("Executing Query"));
+
+	const userData = {idUser} = req.query;
 
 	let options = {
 		where : userData
@@ -33,7 +38,8 @@ router.get('/query', function (req, res) {
 	});
 });
 
-router.post('/insert', function (req, res) {
+router.post('/', function (req, res) {
+	console.log(chalk.greenBright("Executing Create"));
 
 	const userData = {
 		username,
@@ -54,6 +60,81 @@ router.post('/insert', function (req, res) {
 		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
 	});
 
+});
+
+
+router.put('/', function (req, res) {
+	console.log(chalk.blueBright("Executing Update"));
+
+	const userData = ({
+    username,
+    name,
+    lastname,
+    email,
+    password,
+    token,
+    idUser,
+  } = req.body);
+
+  let response = {
+    message: "Something was wrong",
+    error: "0",
+  };
+
+  const options = { where: { idUser: idUser } };
+
+  // console.log(userData, options);
+
+  User.update({ username, name, lastname, email, password }, options)
+    .then((obj) => {
+		if(obj[0] === 0){
+			response.message = "id not found";
+			response.error = "404";
+			res.status(503).json(response);
+		}
+		else{
+			response.message = "Update successful";
+			res.status(200).json(response);
+		}
+	})
+	.catch((err) => {
+		response.error = err;
+		res.status(503).json(response)
+	});
+
+});
+
+
+router.delete("/", function (req, res) {
+  console.log(chalk.redBright("Executing delete"));
+
+  const userData = ({ idUser } = req.body);
+
+  let response = {
+    message: "Something was wrong",
+    error: "0",
+  };
+
+  const options = { where: { idUser: idUser } };
+
+  // console.log(userData, options);
+
+  User.destroy(options)
+    .then((obj) => {
+			console.log(obj);
+      if (obj === 0) {
+        response.message = "id not found";
+        response.error = "404";
+        res.status(503).json(response);
+      } else {
+        response.message = "Deleted successful";
+        res.status(200).json(response);
+      }
+    })
+    .catch((err) => {
+      response.error = err;
+      res.status(503).json(response);
+    });
 });
 
 module.exports = router;
