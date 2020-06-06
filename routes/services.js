@@ -12,6 +12,30 @@ router.use(function timeLog (req, res, next) {
   next();
 });
 
+router.get('/getAll', function (req, res) {
+	console.log(chalk.greenBright("Executing Query"));
+
+	let options = {
+		attributes : ["username", "name", "lastname", "email"]
+	};
+
+	console.log(options);
+
+	User.findAll(options)
+	.then(obj => {
+		if(!obj){
+			res.status(503).json({ message: 'Not found', error: "404"});
+		}
+		else{
+			res.status(200).json(obj);
+		}
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
+	});
+});
+
 router.get('/', function (req, res) {
 	console.log(chalk.greenBright("Executing Query"));
 
