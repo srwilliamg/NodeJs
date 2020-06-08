@@ -36,13 +36,14 @@ app.all('/', function (req, res, next) {
 app.use('/api/services', services);
 
 app.get('/index', (req, res) => {
-  res.render('index', {title:"Nodejs", title_content:"waiting you to do something",content:"Just do it"});
+  res.render('index', {title:"Testing page", title_content:"waiting you to do something",content:"Just do it"});
 });
 
 app.use(function (req, res, next) {
   let err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  // next(err);
+  res.send(`<h1 style="text-align: center;">Page not found</h1>`);
 });
 
 

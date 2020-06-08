@@ -42,12 +42,29 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div id="allData" class="">
-
+        <div class="tab-content" id="nav-tabContent">
+            <div id="query_tab" class="tab-pane fade show active" role="tabpanel" aria-labelledby="query_nav">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="allData" style="border-radius: 8px;"></div>
+                    </div>
                 </div>
             </div>
+            <div id="add_tab" class="tab-pane fade" role="tabpanel" aria-labelledby="add_nav">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" name="" id="">
+                        <br>
+                        <input type="text" name="" id="">
+                        <br>
+                        <input type="text" name="" id="">
+                        <br>
+                        <input type="text" name="" id="">
+                        <br>
+                    </div>
+                </div>                
+            </div>
+            <div id="delete_tab" class="tab-pane fade" role="tabpanel" aria-labelledby="delete_nav">DELETE</div>
         </div>
     </div>
     <!-- Optional JavaScript -->
@@ -62,6 +79,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.6.3/dist/js/tabulator.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="js/index.js"></script>
 </body>
 

@@ -5,7 +5,6 @@ const User = require('../models/index').user;
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
-  console.log('Time: ', Date.now());
   console.log("Request params: ",req.params);
   console.log("Request query data: ",req.query);
   console.log("Request body data: ",req.body,"\n");
@@ -13,21 +12,28 @@ router.use(function timeLog (req, res, next) {
 });
 
 router.get('/getAll', function (req, res) {
-	console.log(chalk.greenBright("Executing Query"));
+  console.log(chalk.greenBright("Executing Query"));
+  
+  const params = {page, size} = req.query;
 
 	let options = {
-		attributes : ["username", "name", "lastname", "email"]
+    attributes : ["idUser", "username", "name", "lastname", "email"],
+    offset: (+page - 1) * +size,
+    limit: +size
 	};
 
-	console.log(options);
-
-	User.findAll(options)
+	User.findAndCountAll(options)
 	.then(obj => {
 		if(!obj){
 			res.status(503).json({ message: 'Not found', error: "404"});
 		}
 		else{
-			res.status(200).json(obj);
+      let strResp = JSON.stringify(obj);
+      let resp = JSON.parse(strResp);
+      let lastPage = parseInt(Math.ceil(resp.count/+size));
+      let response = {last_page:lastPage, data:resp.rows};
+
+      res.status(200).json(response);
 		}
 	})
 	.catch(err => {
@@ -133,7 +139,6 @@ router.delete("/", function (req, res) {
 
   let response = {
     message: "Something was wrong",
-    error: "0",
   };
 
   const options = { where: { idUser: idUser } };
