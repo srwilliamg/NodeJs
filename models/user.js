@@ -1,32 +1,49 @@
-'use strict';
+"use strict";
+const jwt = require('jsonwebtoken');
+
 module.exports = (sequelize, DataTypes) => {
-  const user = sequelize.define('user', {
-    idUser: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    name: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    token: DataTypes.STRING,
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.NOW,
-      isDate: true,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.NOW,
-      validate: {
+  const user = sequelize.define(
+    "user",
+    {
+      idUser: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      username: DataTypes.STRING,
+      password: DataTypes.STRING,
+      name: DataTypes.STRING,
+      lastname: DataTypes.STRING,
+      email: DataTypes.STRING,
+      token: DataTypes.STRING,
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.NOW,
         isDate: true,
-      }
-    }
-  }, {});
-  user.associate = function(models) {
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.NOW,
+        validate: {
+          isDate: true,
+        },
+      },
+    },
+    {}
+  );
+  user.associate = function (models) {
     // associations can be defined here
   };
+
+  user.prototype.generateToken = async function() {
+    const user = this
+    const token = jwt.sign({ idUser: user.idUser.toString() }, 'verySecretPassword')
+
+    user.token = token;
+    await user.save()
+
+    return token
+  }
+
   return user;
 };

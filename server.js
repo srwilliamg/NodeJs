@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const services = require('./routes/services');
+const auth = require('./routes/auth');
 
 app.all('/', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -33,6 +34,7 @@ app.all('/', function (req, res, next) {
   next();
 });
 
+app.use('/api/auth', auth);
 app.use('/api/services', services);
 
 app.get('/index', (req, res) => {

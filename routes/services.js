@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const chalk = require("chalk");
 const User = require('../models/index').user;
+const auth = require('../middleware/auth')
 
 // middleware that is specific to this router
-router.use(function timeLog (req, res, next) {
+router.use((req, res, next) => {
   console.log("Request params: ",req.params);
   console.log("Request query data: ",req.query);
   console.log("Request body data: ",req.body,"\n");
@@ -43,29 +44,11 @@ router.get('/getAll', async (req, res) => {
 		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
   }
 
-	// User.findAndCountAll(options)
-	// .then(obj => {
-	// 	if(!obj){
-	// 		res.status(503).json({ message: 'Not found', error: "404"});
-	// 	}
-	// 	else{
-  //     let strResp = JSON.stringify(obj);
-  //     let resp = JSON.parse(strResp);
-  //     let lastPage = parseInt(Math.ceil(resp.count/+size));
-  //     let response = {last_page:lastPage, data:resp.rows};
-
-  //     res.status(200).json(response);
-	// 	}
-	// })
-	// .catch(err => {
-	// 	console.log(err);
-	// 	res.status(503).json({ message: 'An error has occurred, try again.', error: err });
-	// });
 });
 
 // service to get one register
 // it gets the register id and return the register
-router.get('/', async (req, res) => {
+router.get('/', auth ,async (req, res) => {
 	console.log(chalk.greenBright("Executing Query"));
 
 	const userData = {idUser} = req.query;
@@ -95,7 +78,7 @@ router.get('/', async (req, res) => {
 
 // Service to create a register
 // It gets all the fields and return the object crated in DB
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
 	console.log(chalk.greenBright("Executing Create"));
 
 	const userData = {
@@ -109,7 +92,7 @@ router.post('/', (req, res) => {
 
 	User.create(userData)
 	.then(obj => {
-		console.log(obj);
+    console.log(obj);
 		res.status(200).json(obj);
 	})
 	.catch(err => {
@@ -121,7 +104,7 @@ router.post('/', (req, res) => {
 
 // Service to update data from an existing register
 // It gets data to get changed and return if it was succeful or not
-router.put("/", (req, res) => {
+router.put("/", auth, (req, res) => {
   console.log(chalk.blueBright("Executing Update"));
 
   const userData = ({
@@ -162,7 +145,7 @@ router.put("/", (req, res) => {
 
 // Service to delete a register (hard delete)
 // it gets the id of the register and return succesful or not
-router.delete("/", (req, res) => {
+router.delete("/", auth, (req, res) => {
   console.log(chalk.redBright("Executing delete"));
 
   const userData = ({ idUser } = req.body);
