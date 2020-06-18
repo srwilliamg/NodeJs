@@ -53,16 +53,42 @@
             <div id="add_tab" class="tab-pane fade" role="tabpanel" aria-labelledby="add_nav">
                 <div class="row">
                     <div class="col-12">
-                        <input type="text" name="" id="">
-                        <br>
-                        <input type="text" name="" id="">
-                        <br>
-                        <input type="text" name="" id="">
-                        <br>
-                        <input type="text" name="" id="">
-                        <br>
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail">Email</label>
+                                    <input type="email" class="form-control" id="inputEmail" placeholder="example@email.com">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="********">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="inputName">Name</label>
+                                        <input type="text" class="form-control" id="inputName" placeholder="Your name">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="inputLastName">Lastname</label>
+                                        <input type="text" class="form-control" id="inputLastName"
+                                            placeholder="Your lastname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputUsername">Username </label>
+                                    <input type="text" class="form-control" id="inputUsername" placeholder="Your username">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
                     </div>
-                </div>                
+                </div>
             </div>
             <div id="delete_tab" class="tab-pane fade" role="tabpanel" aria-labelledby="delete_nav">DELETE</div>
         </div>

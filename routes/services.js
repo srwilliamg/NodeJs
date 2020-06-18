@@ -11,7 +11,8 @@ router.use(function timeLog (req, res, next) {
   next();
 });
 
-router.get('/getAll', function (req, res) {
+// service to get all registers in page format
+router.get('/getAll', async (req, res) => {
   console.log(chalk.greenBright("Executing Query"));
   
   const params = {page, size} = req.query;
@@ -20,55 +21,81 @@ router.get('/getAll', function (req, res) {
     attributes : ["idUser", "username", "name", "lastname", "email"],
     offset: (+page - 1) * +size,
     limit: +size
-	};
+  };
+  
+  try {
+    const users = await User.findAndCountAll(options);
 
-	User.findAndCountAll(options)
-	.then(obj => {
-		if(!obj){
-			res.status(503).json({ message: 'Not found', error: "404"});
-		}
-		else{
-      let strResp = JSON.stringify(obj);
+    if(!users){
+      res.status(503).json({ message: 'Not found', error: "404"});
+    }
+    else{
+      let strResp = JSON.stringify(users);
       let resp = JSON.parse(strResp);
       let lastPage = parseInt(Math.ceil(resp.count/+size));
       let response = {last_page:lastPage, data:resp.rows};
 
       res.status(200).json(response);
-		}
-	})
-	.catch(err => {
-		console.log(err);
+    }
+
+  } catch (err) {
+    console.log(err);
 		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
-	});
+  }
+
+	// User.findAndCountAll(options)
+	// .then(obj => {
+	// 	if(!obj){
+	// 		res.status(503).json({ message: 'Not found', error: "404"});
+	// 	}
+	// 	else{
+  //     let strResp = JSON.stringify(obj);
+  //     let resp = JSON.parse(strResp);
+  //     let lastPage = parseInt(Math.ceil(resp.count/+size));
+  //     let response = {last_page:lastPage, data:resp.rows};
+
+  //     res.status(200).json(response);
+	// 	}
+	// })
+	// .catch(err => {
+	// 	console.log(err);
+	// 	res.status(503).json({ message: 'An error has occurred, try again.', error: err });
+	// });
 });
 
-router.get('/', function (req, res) {
+// service to get one register
+// it gets the register id and return the register
+router.get('/', async (req, res) => {
 	console.log(chalk.greenBright("Executing Query"));
 
 	const userData = {idUser} = req.query;
 
 	let options = {
 		where : userData
-	};
+  };
+  
+  console.log(options);
 
-	console.log(options);
+  try {
+    const user = await User.findOne(options);
 
-	User.findOne(options)
-	.then(obj => {
-		if(!obj){
-			res.status(503).json({ message: 'Not found', error: "404"});
-		}
-		else{
-			res.status(200).json(obj);
-		}
-	})
-	.catch(err => {
-		console.log(err);
+    if(!user){
+      res.status(503).json({ message: 'Not found', error: "404"});
+    }
+    else{
+      res.status(200).json(user);
+    }
+
+  } catch (err) {
+    console.log(err);
 		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
-	});
+  }
+
 });
 
-router.post('/', function (req, res) {
+// Service to create a register
+// It gets all the fields and return the object crated in DB
+router.post('/', (req, res) => {
 	console.log(chalk.greenBright("Executing Create"));
 
 	const userData = {
@@ -92,8 +119,9 @@ router.post('/', function (req, res) {
 
 });
 
-
-router.put("/", function (req, res) {
+// Service to update data from an existing register
+// It gets data to get changed and return if it was succeful or not
+router.put("/", (req, res) => {
   console.log(chalk.blueBright("Executing Update"));
 
   const userData = ({
@@ -132,7 +160,9 @@ router.put("/", function (req, res) {
     });
 });
 
-router.delete("/", function (req, res) {
+// Service to delete a register (hard delete)
+// it gets the id of the register and return succesful or not
+router.delete("/", (req, res) => {
   console.log(chalk.redBright("Executing delete"));
 
   const userData = ({ idUser } = req.body);

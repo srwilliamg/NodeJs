@@ -4,8 +4,8 @@
   "description": "This is generic repository for NodeJs application with Sequelize as DB",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server.js -e hbs,js",
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js -e hbs,js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
