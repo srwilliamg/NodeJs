@@ -78,7 +78,7 @@ router.get('/', auth ,async (req, res) => {
 
 // Service to create a register
 // It gets all the fields and return the object crated in DB
-router.post('/', auth, (req, res) => {
+router.post('/', (req, res) => {
 	console.log(chalk.greenBright("Executing Create"));
 
 	const userData = {

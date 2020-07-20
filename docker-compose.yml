@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+  webnet:
+      driver: bridge
+
+services:
+  web:
+    build: './'
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - webnet
+    # command: bash -c "npm install -g sequelize-cli && sequelize db:migrate && sequelize db:migrate"
+  
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - '3306'
+    networks:
+      - webnet
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=testing_db

@@ -3,7 +3,7 @@
     "username": "root",
     "password": "root",
     "database": "testing_db",
-    "host": "127.0.0.1",
+    "host": "db",
     "dialect": "mysql",
     "operatorsAliases": "false"
   },
@@ -11,15 +11,15 @@
     "username": "root",
     "password": "root",
     "database": "testing_db",
-    "host": "127.0.0.1",
+    "host": "db",
     "dialect": "mysql",
     "operatorsAliases": "false"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "password": "root",
+    "database": "testing_db",
+    "host": "db",
     "dialect": "mysql",
     "operatorsAliases": "false"
   }

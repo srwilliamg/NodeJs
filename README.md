@@ -10,3 +10,8 @@ This is a repository for a Nodejs application with Sequelize as ORM connected to
 #### Sequelize useful commands
 - __sequelize__ model:create __--name__ parent __--attributes__ id_parent:integer,username:string,createdAt:date,updatedAt:date
 - __sequelize__ migration:generate __--name__=migration_name __--version__=1
+
+#### Docker useful commands
+-  docker-compose build
+-  docker-compose up -d
+-  docker exec container env
