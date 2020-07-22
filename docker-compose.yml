@@ -13,6 +13,8 @@ services:
       - db
     networks:
       - webnet
+    environment: 
+      - DATABASE_HOST=db
     # command: bash -c "npm install -g sequelize-cli && sequelize db:migrate && sequelize db:migrate"
   
   db:
