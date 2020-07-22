@@ -158,6 +158,46 @@ router.put("/", auth, (req, res) => {
     });
 });
 
+// Service to update data from an existing register
+// It gets data to get changed and return if it was succeful or not
+router.patch("/", auth, (req, res) => {
+  console.log(chalk.blueBright("Executing Patch"));
+
+  const updateFields = Object.keys(req.body);
+  const user = req.user;
+  const validFields = Object.keys(user.get({
+    plain: true
+  }));
+
+  const isValidRequest = updateFields.every((updateField) => validFields.includes(updateField));
+  
+  let response = {
+    message: "Something was wrong",
+    error: "001",
+  };
+
+  if(!isValidRequest){
+    response.message = "Invalid fields in the request.";
+    response.error = "002";
+    res.status(503).json(response);
+  }
+
+  updateFields.forEach(field => {
+    user[field] = req.body[field];
+  });
+
+  user.save()
+  .then((user) => {
+    res.status(200).json(user.getPublicData());
+  })
+  .catch((err) =>{
+    response.message = err;
+    res.status(503).json(response);
+  })
+
+  
+});
+
 // Service to delete a register (hard delete)
 // it gets the id of the register and return succesful or not
 router.delete("/", auth, (req, res) => {
