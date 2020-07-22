@@ -28,12 +28,6 @@ app.use(cookieParser());
 const services = require('./routes/services');
 const auth = require('./routes/auth');
 
-app.all('/', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
-
 app.use('/api/auth', auth);
 app.use('/api/services', services);
 

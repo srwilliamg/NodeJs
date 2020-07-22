@@ -58,7 +58,6 @@ router.get('/', auth ,async (req, res) => {
   };
   
   console.log(options);
-
   try {
     const user = await User.findOne(options);
 
@@ -69,6 +68,22 @@ router.get('/', auth ,async (req, res) => {
       res.status(200).json(user);
     }
 
+  } catch (err) {
+    console.log(err);
+		res.status(503).json({ message: 'An error has occurred, try again.', error: err });
+  }
+
+});
+
+// service to get one register
+// it gets the register id and return the register
+router.get('/getMyData', auth ,async (req, res) => {
+	console.log(chalk.greenBright("Executing getMydata"));
+
+  try {
+    const userPublicdata = req.user.getPublicData();
+    console.log(userPublicdata);
+    res.status(200).json(userPublicdata);
   } catch (err) {
     console.log(err);
 		res.status(503).json({ message: 'An error has occurred, try again.', error: err });

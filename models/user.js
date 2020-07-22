@@ -45,5 +45,14 @@ module.exports = (sequelize, DataTypes) => {
     return token
   }
 
+  user.prototype.getPublicData = function() {
+    const user = this;
+    let userObject = user.toJSON();
+    delete userObject.password;
+    delete userObject.token;
+
+    return userObject
+  }
+
   return user;
 };
