@@ -6,6 +6,7 @@ networks:
 
 services:
   web:
+    # command: bash -c "sequelize db:migrate && sequelize db:migrate"
     build: './'
     ports:
       - "5000:5000"
@@ -14,8 +15,7 @@ services:
     networks:
       - webnet
     environment: 
-      - DATABASE_HOST=db
-    # command: bash -c "npm install -g sequelize-cli && sequelize db:migrate && sequelize db:migrate"
+      - DATABASE_HOST=172.18.0.1
   
   db:
     image: mysql

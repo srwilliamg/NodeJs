@@ -27,9 +27,12 @@ app.use(cookieParser());
 
 const services = require('./routes/services');
 const auth = require('./routes/auth');
+const files = require('./routes/files');
+
 
 app.use('/api/auth', auth);
 app.use('/api/services', services);
+app.use('/api/files', files);
 
 app.get('/index', (req, res) => {
   res.render('index', {title:"Testing page", title_content:"waiting you to do something",content:"Just do it"});
