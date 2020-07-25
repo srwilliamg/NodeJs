@@ -16,6 +16,19 @@ module.exports = (sequelize, DataTypes) => {
       lastname: DataTypes.STRING,
       email: DataTypes.STRING,
       token: DataTypes.STRING,
+      avatar: {
+        type: DataTypes.BLOB,
+        allowNull: true,
+        get() {
+          let avatar = this.getDataValue('avatar');
+          if(avatar){
+            return avatar.toString('base64');
+          }
+          else{
+            return null;
+          }
+        },
+      },
       createdAt: {
         type: DataTypes.DATE,
         defaultValue: sequelize.NOW,
