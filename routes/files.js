@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const chalk = require("chalk");
 const auth = require("../middleware/auth");
-const User = require("../models/index").user;
 const multer = require('multer');
 const upload = multer({
   dest:'images',
@@ -19,7 +18,7 @@ const upload = multer({
 });
 
 
-router.post("/upload", upload.single('upload'), (req, res) => {
+router.post("/upload", auth ,upload.single('upload'), (req, res) => {
   console.log(chalk.whiteBright.inverse.bold("Uploading"));
   res.send();
 },

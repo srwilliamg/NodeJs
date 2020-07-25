@@ -11,10 +11,17 @@ router.post("/logIn", (req, res) => {
 
   User.findOne(userData)
     .then((obj) => {
-      console.log(obj);
-      obj.generateToken();
-      console.log(obj);
-      res.status(200).json(obj);
+      if(!obj){
+        res
+          .status(503)
+          .json({ message: "User does not exist.", error: "004" });
+      }
+      else{
+        console.log(obj);
+        obj.generateToken();
+        console.log(obj);
+        res.status(200).json(obj);
+      }
     })
     .catch((err) => {
       console.log(err);
