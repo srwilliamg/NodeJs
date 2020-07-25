@@ -7,9 +7,9 @@ const User = require("../models/index").user;
 router.post("/logIn", (req, res) => {
   console.log(chalk.whiteBright.bold("Logging in"));
 
-  const userData = ({ email, password } = req.body);
+  const userData = { email, password } = req.body;
 
-  User.findOne(userData)
+  User.findOne({"where":userData})
     .then((obj) => {
       if(!obj){
         res
@@ -17,10 +17,11 @@ router.post("/logIn", (req, res) => {
           .json({ message: "User does not exist.", error: "004" });
       }
       else{
-        console.log(obj);
-        obj.generateToken();
-        console.log(obj);
-        res.status(200).json(obj);
+        obj.generateToken().then((token)=>{
+          obj = obj.getPublicData();
+          obj.token= token;
+          res.status(200).json(obj);
+        });
       }
     })
     .catch((err) => {

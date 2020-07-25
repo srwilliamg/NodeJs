@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     const token = jwt.sign({ idUser: user.idUser.toString() }, 'verySecretPassword',  { expiresIn: 60 * 60 })
 
     user.token = token;
-    await user.save()
+    await user.save();
 
     return token
   }
