@@ -1,5 +1,6 @@
 "use strict";
 const jwt = require('jsonwebtoken');
+const serverConfig = require('../config/serverConfig.json');
 
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define(
@@ -49,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   user.prototype.generateToken = async function() {
-    const user = this
-    const token = jwt.sign({ idUser: user.idUser.toString() }, 'verySecretPassword',  { expiresIn: 60 * 60 })
+    const user = this;
+    const token = jwt.sign({ idUser: user.idUser.toString() }, serverConfig.secretKey,  { expiresIn: 60 * 60 });
 
     user.token = token;
     await user.save();
